@@ -38,6 +38,7 @@ int main(void) {
 
 	cout << "Did I change the master branch?" << endl; 
 	cout << "Did I made a new branch?" << endl;
+	cout << "Did I merged the two branches? - not yet" << endl;
 
 	return 0;
 }
