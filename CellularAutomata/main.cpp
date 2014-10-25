@@ -10,7 +10,7 @@ using namespace std;
 int main(void) {
 
 	CellularAutomata1D ca;
-	Rule rule;
+	Rule rule; 
 
 	ifstream f_ca("initial_ca.txt");
 
@@ -35,6 +35,8 @@ int main(void) {
 		cout << ca << endl;
 	}
 	ca.iterate(1);
+
+	cout << "Did I change the master branch?" << endl; 
 
 	return 0;
 }
