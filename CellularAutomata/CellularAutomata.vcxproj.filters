@@ -45,5 +45,13 @@
     <Text Include="testRule.txt">
       <Filter>Tests</Filter>
     </Text>
+    <Text Include="testCellularAutomata1D.txt">
+      <Filter>Tests</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="image_try.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -96,7 +96,11 @@
   <ItemGroup>
     <Text Include="initial_ca.txt" />
     <Text Include="in_rule.txt" />
+    <Text Include="testCellularAutomata1D.txt" />
     <Text Include="testRule.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="image_try.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
