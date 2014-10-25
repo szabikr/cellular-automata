@@ -1,0 +1,84 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+#include "Rule.h"
+
+using namespace std;
+
+int main(void) {
+
+	cout << "Testing the Rule class: " << endl << endl;
+
+
+
+	// ------------------------------------------------------------------------
+	// Simple constructor
+	cout << "Simple constructor: " << endl;
+
+	Rule r1;
+	cout << r1;
+
+	cout << "OK" << endl << endl << endl;
+
+
+
+	// ------------------------------------------------------------------------
+	// An other constructor
+	cout << "Explicite constructor: " << endl;
+
+	vector<int> ruleTable;
+	unsigned int numberOfNeighbours;
+	fstream f_in("in_rule.txt");
+	if (f_in.is_open()) {
+		f_in >> numberOfNeighbours;
+		int value;
+		while (f_in >> value) {
+			ruleTable.push_back(value);
+		}
+	}
+	else {
+		cout << "Unable to open the file!" << endl;
+	}
+	Rule r2(ruleTable, numberOfNeighbours);
+
+	// Output operator
+	cout << r2 << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+	
+
+	// ------------------------------------------------------------------------
+	// Input operator
+	cout << "Input operator:" << endl;
+
+	ifstream f_in2("in_rule.txt");
+	Rule r3;
+	if (f_in2.is_open()) {
+		f_in2 >> r3;
+	}
+	cout << r3 << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+
+
+	// ------------------------------------------------------------------------
+	// Assignment operator
+	cout << "Assignment operator:" << endl;
+
+	Rule r4;
+	r4 = r3;
+	cout << r4 << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+
+
+	// ------------------------------------------------------------------------
+	// Setter
+	cout << "Setter:" << endl;
+
+	return 0;
+}
