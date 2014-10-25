@@ -38,6 +38,7 @@ int main(void) {
 
 	cout << "Did I change the master branch?" << endl;
 	cout << "This is added to the master branch." << endl;
+	cout << "Lets merge the branches" << endl;
 
 	return 0;
 }
