@@ -36,7 +36,9 @@ int main(void) {
 	}
 	ca.iterate(1);
 
-	cout << "Did I change the master branch?" << endl;
+	cout << "Did I change the master branch?" << endl; 
+	cout << "Did I made a new branch?" << endl;
+	cout << "Did I merged the two branches? - not yet" << endl;
 	cout << "This is added to the master branch." << endl;
 	cout << "Lets merge the branches" << endl;
 
