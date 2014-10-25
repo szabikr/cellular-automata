@@ -37,6 +37,7 @@ int main(void) {
 	ca.iterate(1);
 
 	cout << "Did I change the master branch?" << endl; 
+	cout << "Did I made a new branch?" << endl;
 
 	return 0;
 }
