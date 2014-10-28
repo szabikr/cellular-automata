@@ -135,6 +135,7 @@ int CellularAutomata1D::iterate(unsigned int t) {
 				end = end - m_caStatus.size();
 			}
 
+			// ezt majd a rule osztalyban
 			vector<int> bits;		// tmp for creating the number
 
 			while (begin != end) {	// fill the bits vector with the bits between the range
