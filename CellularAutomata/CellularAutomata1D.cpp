@@ -105,46 +105,10 @@ unsigned int CellularAutomata1D::getSize() {
 
 /***** Special methods *****/
 
-int CellularAutomata1D::formNumber(vector<int> bits) {
-	if (bits.size() > 0) {
-		int number = 0;
-
-		for (int i = bits.size() - 1; i >= 0; --i) {
-			if (bits[i] != 0) {
-				number += (int)pow(2.0, (double)(bits.size() - i - 1));
-			}
-		}
-		
-		return number;
-	}
-	return -1;
-}
-
 int CellularAutomata1D::iterate(unsigned int t) {
 	for (unsigned int it = 0; it < t; ++it) {	// main cycle
 		vector<int> new_caStatus = m_caStatus;
 		for (unsigned int i = 0; i < m_caStatus.size(); ++i) {	// lets go through the current status
-			/*int begin = i - m_rule.getNumberOfNeighbours() / 2;	// deceide where does the range start
-			int end = i + m_rule.getNumberOfNeighbours() / 2;	// deceide where does the range end
-
-			if (begin < 0) {					// if we need to use the chain behaviour
-				begin = m_caStatus.size() + begin;
-			}
-
-			if (end >= m_caStatus.size()) {		// if we need to use the chain behaviour
-				end = end - m_caStatus.size();
-			}
-
-			vector<int> bits;		// tmp for creating the number
-
-			while (begin != end) {	// fill the bits vector with the bits between the range
-				bits.push_back(m_caStatus[begin]);
-				if (++begin >= m_caStatus.size()) {	// if we nee to use the chain behaviour
-					begin = 0;
-				}
-			}
-			bits.push_back(m_caStatus[end]);	// push the last element into the vector*/
-			//int rulePosition = formNumber(bits);	// creating a decimalnumber from the bits
 			new_caStatus[i] = m_rule.setNewStatus(m_caStatus, i);	// using the rule
 		}
 		m_caStatus = new_caStatus;		// refreshing the current status

@@ -16,8 +16,6 @@ private:
 	vector<int> m_caStatus;
 	Rule m_rule;
 
-	int formNumber(vector<int> bits);
-
 public:
 	
 	// Life cycle
