@@ -17,6 +17,7 @@ private:
 	unsigned int m_numberOfNeighbours;	// must be positive
 
 	vector<vector<int>> makeStatuses() const;
+	int formNumber(vector<int> bits);
 
 public:
 
@@ -39,7 +40,7 @@ public:
 	unsigned int getNumberOfNeighbours();
 
 	// Special methods
-	
+	int setNewStatus(vector<int> statuses, int poz);	// calc new value
 
 };
 

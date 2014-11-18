@@ -124,7 +124,7 @@ int CellularAutomata1D::iterate(unsigned int t) {
 	for (unsigned int it = 0; it < t; ++it) {	// main cycle
 		vector<int> new_caStatus = m_caStatus;
 		for (unsigned int i = 0; i < m_caStatus.size(); ++i) {	// lets go through the current status
-			int begin = i - m_rule.getNumberOfNeighbours() / 2;	// deceide where does the range start
+			/*int begin = i - m_rule.getNumberOfNeighbours() / 2;	// deceide where does the range start
 			int end = i + m_rule.getNumberOfNeighbours() / 2;	// deceide where does the range end
 
 			if (begin < 0) {					// if we need to use the chain behaviour
@@ -143,9 +143,9 @@ int CellularAutomata1D::iterate(unsigned int t) {
 					begin = 0;
 				}
 			}
-			bits.push_back(m_caStatus[end]);	// push the last element into the vector
-			int rulePosition = formNumber(bits);	// creating a decimalnumber from the bits
-			new_caStatus[i] = m_rule.getRuleTableValue(rulePosition);	// using the rule
+			bits.push_back(m_caStatus[end]);	// push the last element into the vector*/
+			//int rulePosition = formNumber(bits);	// creating a decimalnumber from the bits
+			new_caStatus[i] = m_rule.setNewStatus(m_caStatus, i);	// using the rule
 		}
 		m_caStatus = new_caStatus;		// refreshing the current status
 	}

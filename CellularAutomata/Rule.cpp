@@ -142,3 +142,45 @@ vector<vector<int>> Rule::makeStatuses() const {
 	}
 	return statuses;
 }
+
+int Rule::formNumber(vector<int> bits) {
+	if (bits.size() > 0) {
+		int number = 0;
+
+		for (int i = bits.size() - 1; i >= 0; --i) {
+			if (bits[i] != 0) {
+				number += (int)pow(2.0, (double)(bits.size() - i - 1));
+			}
+		}
+
+		return number;
+	}
+	return -1;
+}
+
+
+int Rule::setNewStatus(vector<int> statuses, int poz) {
+	int begin = poz - m_numberOfNeighbours / 2;	// deceide where does the range start
+	int end = poz + m_numberOfNeighbours / 2;	// deceide where does the range end
+
+	if (begin < 0) {					// if we need to use the chain behaviour
+		begin = statuses.size() + begin;
+	}
+
+	if (end >= statuses.size()) {		// if we need to use the chain behaviour
+		end = end - statuses.size();
+	}
+
+	vector<int> bits;		// tmp for creating the number
+
+	while (begin != end) {	// fill the bits vector with the bits between the range
+		bits.push_back(statuses[begin]);
+		if (++begin >= statuses.size()) {	// if we nee to use the chain behaviour
+			begin = 0;
+		}
+	}
+	bits.push_back(statuses[end]);	// push the last element into the vector
+	int rulePosition = formNumber(bits);	// creating a decimalnumber from the bits
+
+	return m_ruleTable.at(rulePosition);
+}

@@ -8,7 +8,7 @@ class CellularAutomata {
 
 public:
 	CellularAutomata() { };
-	~CellularAutomata() { };
+	virtual ~CellularAutomata() { };
 
 protected:
 	// Setters
