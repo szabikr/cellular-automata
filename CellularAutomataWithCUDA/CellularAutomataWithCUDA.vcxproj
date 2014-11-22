@@ -153,6 +153,21 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="initial_ca.txt" />
+    <Text Include="in_rule.txt" />
+    <Text Include="short_initial_ca.txt" />
+    <Text Include="testRule.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CellularAutomata.h" />
+    <ClInclude Include="CellularAutomata1D.h" />
+    <ClInclude Include="Rule.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CellularAutomata1D.cpp" />
+    <ClCompile Include="Rule.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 6.5.targets" />
