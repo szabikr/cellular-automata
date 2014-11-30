@@ -4,6 +4,9 @@
 
 #include "Rule.h"
 
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+
 class CellularAutomata {
 
 public:
@@ -12,16 +15,17 @@ public:
 
 protected:
 	// Setters
-	virtual int setRule(Rule rule) = 0;
-	virtual int setInitialStatus(vector<int> initStatus) = 0;
-	virtual int setCellValue(int value, unsigned int index) = 0;
+	virtual void setRule(const Rule &rule) = 0;
+	virtual void setInitialState(int *initState, unsigned int size) = 0;
+	virtual void setCellValue(int value, unsigned int index) = 0;
 
 	// Getters
-	virtual int getCellValue(unsigned int index) = 0;
+	virtual int getCellValue(unsigned int index) const = 0;
 	//virtual void* getCAStatus() = 0;
 
 	// Special methods
 	virtual int iterate(unsigned int t) = 0;
+	//virtual int iterateGPU(unsigned int t) = 0;
 	virtual int draw(int canvas) = 0;
 
 };

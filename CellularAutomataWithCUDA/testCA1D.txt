@@ -1,0 +1,60 @@
+	cout << "Testing the CellularAutomata1D class: " << endl << endl;
+
+	// ---------------------------------
+	cout << "Implicite constructor:" << endl << endl;
+	CellularAutomata1D ca1;
+
+	cout << "OK" << endl << endl << endl;
+
+
+	// ---------------------------------
+	cout << "Input operator: " << endl << endl;
+	ifstream f_ca("short_initial_ca.txt");
+
+	if (f_ca.is_open()) {
+		f_ca >> ca1;
+	}
+	else {
+		cout << "Unable to open the file: " << "short_initial_ca.txt" << endl;
+	}
+
+	cout << "OK" << endl << endl << endl;
+
+
+	// ---------------------------------
+	cout << "Output operator:" << endl << endl;
+	cout << ca1 << endl;
+
+
+	// ---------------------------------
+	cout << "size:" << ca1.getSize() << endl << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+
+	Rule rule;
+	ifstream f_rule("in_rule.txt");
+
+	if (f_rule.is_open()) {
+		f_rule >> rule;
+	}
+	else {
+		cout << "Unable to open the file: " << "in_rule.txt" << endl;
+	}
+
+	ca1.setRule(rule);
+
+	// ---------------------------------
+	cout << "Assignment operator:" << endl << endl;
+	CellularAutomata1D ca2;
+	ca2 = ca1;
+	cout << ca2 << endl << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+	// ---------------------------------
+	cout << "Copy constructor:" << endl << endl;
+	CellularAutomata1D ca3(ca1);
+	cout << ca3 << endl << endl;
+
+	cout << "OK" << endl << endl << endl;

@@ -80,5 +80,11 @@ int main(void) {
 	// Setter
 	cout << "Setter:" << endl;
 
+	r4.setRuleTableValue(0, 1);
+	cout << r4 << endl;
+
+	cout << "OK" << endl << endl << endl;
+
+
 	return 0;
 }

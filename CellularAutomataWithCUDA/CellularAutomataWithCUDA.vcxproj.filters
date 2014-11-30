@@ -18,9 +18,18 @@
     <Text Include="testRule.txt">
       <Filter>Tests</Filter>
     </Text>
+    <Text Include="testCA1D.txt">
+      <Filter>Tests</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu">
+    <CudaCompile Include="CellularAutomata1D.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Rule.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -28,18 +37,18 @@
     <ClInclude Include="CellularAutomata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CellularAutomata1D.h">
+    <ClInclude Include="Rule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule.h">
+    <ClInclude Include="CellularAutomata1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CellularAutomata1D.cpp">
+    <ClCompile Include="Rule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule.cpp">
+    <ClCompile Include="CellularAutomata1D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
