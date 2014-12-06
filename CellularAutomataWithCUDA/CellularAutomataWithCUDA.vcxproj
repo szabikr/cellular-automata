@@ -155,7 +155,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="CellularAutomata1D.cu" />
+    <CudaCompile Include="CellularAutomata1Dcuda.cu" />
     <CudaCompile Include="main.cpp" />
     <CudaCompile Include="Rule.cu" />
   </ItemGroup>
@@ -169,6 +169,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="CellularAutomata1D.h" />
+    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Rule.h" />
   </ItemGroup>
   <ItemGroup>

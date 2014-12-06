@@ -1,107 +1,106 @@
 
 #include "CellularAutomata1D.h"
+#include "MemoryManager.h"
+
+using namespace std;
 
 /***** Life cycle *****/
 
+/***** Constructor
+*/
 CellularAutomata1D::CellularAutomata1D() 
-	: m_size(0) {
-	m_h_caState = (int*)malloc(m_size * sizeof(int));
+	: m_size(0), m_capacity(0) {
+	m_h_rule = new Rule();
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
 }
 
-/*****
+
+/***** Constructor
 	Gets the size.
 	Creating the ca.
 */
 CellularAutomata1D::CellularAutomata1D(unsigned int size)
-	: m_size(size) {
-	m_h_caState = (int*)malloc(m_size * sizeof(int));
+	: m_size(size), m_capacity(size) {
+	m_h_rule = new Rule();
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
 }
 
 
-/*****
+/***** Constructor
 	Gets a pointer with the starting memory address of the
 	1 dimensional ca and the size of this sequence.
 	Creating the ca.
 */
 CellularAutomata1D::CellularAutomata1D(int *caState, unsigned int size)
-	: m_size(size) {
-	const size_t SIZE = m_size * sizeof(int);
-	m_h_caState = (int*)malloc(SIZE);
-	memcpy(m_h_caState, caState, SIZE);
+	: m_size(size), m_capacity(size) {
+	m_h_rule = new Rule();
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+	copy(caState, caState + m_size, m_h_caState);
 }
 
-/*****
+
+/***** Constructor
 	Gets a pointer with the starting memory address of the
 	1 dimensional ca and the size of this sequence and the 
 	specified rule.
 	Creating the ca.
 */
-CellularAutomata1D::CellularAutomata1D(int *caState, unsigned int size, Rule rule) 
-	: m_size(size), m_h_rule(rule) {
-	const size_t SIZE = m_size * sizeof(int);
-	m_h_caState = (int*)malloc(SIZE);
-	memcpy(m_d_caState, caState, SIZE);
+CellularAutomata1D::CellularAutomata1D(int *caState, unsigned int size, const Rule &rule) 
+	: m_size(size), m_capacity(size) {
+	m_h_rule = new Rule(rule);
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+	copy(caState, caState + m_size, m_h_caState);
 }
 
 
-/*****
+/***** Constructor
 	Copy constructor
 */
 CellularAutomata1D::CellularAutomata1D(const CellularAutomata1D &ca) {
+	m_h_rule = new Rule(*ca.m_h_rule);
 	m_size = ca.m_size;
-	m_h_rule = ca.m_h_rule;
-	const size_t SIZE = m_size * sizeof(int);
-	m_h_caState = (int*)malloc(SIZE);
-	memcpy(m_h_caState, ca.m_h_caState, SIZE);
+	m_capacity = ca.m_capacity;
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+	copy(ca.m_h_caState, ca.m_h_caState + m_size, m_h_caState);
 	
 	//TODO: copy the ca states to the gpu memory if there is one
 }
 
 
+/***** Destructor
+*/
 CellularAutomata1D::~CellularAutomata1D()
 {
-	if (m_h_caState) {
-		free(m_h_caState);
+	MemoryManager::cpu_freeArray(m_h_caState);
+
+	if (m_h_rule) {
+		delete m_h_rule;
 	}
-	
-	//TODO: free the allocated memory on the gpu
-}
-
-
-/*****
-	Allocating the memory on the cpu and the gpu
-*/
-void CellularAutomata1D::memAlloc(unsigned int size) {
-	m_size = size;
-	m_h_caState = (int*)malloc(m_size * sizeof(int));
-	//TODO: allocate the memory on the gpu
-}
-
-/*****
-	Copying the memory to the cpu and the gpu
-*/
-void CellularAutomata1D::memCopy(int *caState) {
-	for (unsigned int i = 0; i < m_size; ++i) {
-		//UNDONE: check if the memory is accesseble or not!
-		m_h_caState[i] = caState[i];
+	if (m_d_caState) {
+		//TODO: free the allocated memory on the gpu
 	}
-	//TODO: copy data to the gpu
 }
 
 
 
 /***** Operators *****/
 
+/***** Operator
+	Assignment operator
+*/
 CellularAutomata1D& CellularAutomata1D::operator=(const CellularAutomata1D &ca) {
 	if (this != &ca) {
-		if (m_h_caState) {
-			free(m_h_caState);
+		MemoryManager::cpu_freeArray(m_h_caState);
+		if (m_h_rule) {
+			delete m_h_rule;
 		}
+
+		m_h_rule = new Rule(*ca.m_h_rule);
+		
 		m_size = ca.m_size;
-		m_h_rule = ca.m_h_rule;
-		const size_t SIZE = m_size * sizeof(int);
-		m_h_caState = (int*)malloc(SIZE);
-		memcpy(m_h_caState, ca.m_h_caState, SIZE);
+		m_capacity = ca.m_capacity;
+		m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+		copy(ca.m_h_caState, ca.m_h_caState + 1, m_h_caState);
 
 		//TODO: copy the ca states to the gpu memory as well, if there is any
 	}
@@ -109,36 +108,34 @@ CellularAutomata1D& CellularAutomata1D::operator=(const CellularAutomata1D &ca) 
 }
 
 
+/***** Operator
+*/
 istream& operator>>(istream &is, CellularAutomata1D &ca) {
 	int value;
-	unsigned int i;
-	for (i = 0; is >> value; ++i) {
-		if (!ca.m_h_caState) {
-			ca.m_size = 1;
-			ca.m_h_caState = (int*)malloc(ca.m_size * sizeof(int));
-		}
-		if (i >= ca.m_size) {
-			if (!ca.m_size) {
-				ca.m_size = 1;
+
+	while (is >> value) {
+		if (ca.m_size >= ca.m_capacity) {
+			if (ca.m_capacity == 0) {
+				ca.m_capacity = 1;
 			}
-			ca.m_size = 2 * ca.m_size;
-			ca.m_h_caState = (int*)realloc(ca.m_h_caState, ca.m_size * sizeof(int));
+			ca.m_h_caState = MemoryManager::cpu_reAllocArray<int>(ca.m_h_caState, ca.m_capacity, ca.m_capacity * 2);
+			ca.m_capacity *= 2;
 		}
-		ca.m_h_caState[i] = value;
+		ca.m_h_caState[ca.m_size++] = value;
 	}
-	ca.m_size = i;
-	ca.m_h_caState = (int*)realloc(ca.m_h_caState, ca.m_size * sizeof(int));
 
 	return is;
 }
 
 
+/***** Operator
+*/
 ostream& operator<<(ostream &os, const CellularAutomata1D &ca) {
-	//os << "The status: " << endl;
+	os << "The status: " << endl;
 	for (unsigned int i = 0; i < ca.m_size; ++i) {
 		os << ca.m_h_caState[i] << " ";
 	}
-	//os << endl << ca.m_h_rule;
+	os << endl << *ca.m_h_rule;
 	return os;
 }
 
@@ -147,8 +144,10 @@ ostream& operator<<(ostream &os, const CellularAutomata1D &ca) {
 /***** Setters *****/
 
 void CellularAutomata1D::setRule(const Rule &rule) {
-	//UNDONE: check if the rule is null .. Exception
-	m_h_rule = rule;
+	if (m_h_rule) {
+		delete m_h_rule;
+	}
+	m_h_rule = new Rule(rule);
 
 	//TODO: refresh it on the gpu memory as well
 }
@@ -162,19 +161,20 @@ void CellularAutomata1D::setRule(string fileName) {
 		f_rule >> rule;
 	}
 	else {
+		//UNDONE: Put this cout into an exception.
 		cout << "Unable to open the file: " << "in_rule.txt" << endl;
 	}
 	f_rule.close();
 
 	setRule(rule);
-
-	//TODO: refresh it on the gpu memory if needed
 }
 
 
 void CellularAutomata1D::setInitialState(int *initState, unsigned int size) {
-	const size_t SIZE = size * sizeof(int);
-	memcpy(m_h_caState, initState, SIZE);
+	m_size = size;
+	m_capacity = m_size;
+	m_h_caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+	copy(initState, initState + m_size, m_h_caState);
 
 	//TODO: reset the memory on the gpu
 }
@@ -206,16 +206,14 @@ unsigned int CellularAutomata1D::getSize() const {
 	return m_size;
 }
 
-/*
+/*****
 	Cloning the ca because we don't want to return
-	in getCAState function the real addres of the
+	in getCAState function the real adress of the
 	ca.
 */
 int* CellularAutomata1D::cloneCA() {
-	int* caState = (int*)malloc(m_size * sizeof(int));
-	for (int i = 0; i < m_size; ++i) {
-		caState[i] = m_h_caState[i];
-	}
+	int* caState = MemoryManager::cpu_allocArray<int>(m_capacity);
+	copy(m_h_caState, m_h_caState + 1, caState);
 	return caState;
 }
 
@@ -224,27 +222,13 @@ int* CellularAutomata1D::cloneCA() {
 
 int CellularAutomata1D::iterate(unsigned int t) {
 	for (unsigned int it = 0; it < t; ++it) {	// main cycle
-		int *new_caStatus = cloneCA();
+		int *temp_caState = MemoryManager::cpu_allocArray<int>(m_capacity);	// allocating memory for a temp state array
 		for (unsigned int i = 0; i < m_size; ++i) {	// lets go through the current state
-			new_caStatus[i] = m_h_rule.setNewState(m_h_caState, m_size, i);	// using the rule
+			temp_caState[i] = m_h_rule->setNewState(m_h_caState, m_size, i);	// using the rule
 		}
-		memcpy(m_h_caState, new_caStatus, m_size * sizeof(int));	// refreshing the current state
+		copy(temp_caState, temp_caState + m_size, m_h_caState);	// refreshing the current state
 	}
 	return 0;
-}
-
-/*
-int CellularAutomata1D::allocateMemoryOnGPU(int *dev_variable) {
-	cudaError_t error_cuda = cudaMalloc((void**)&dev_variable, m_caStatus.size() * sizeof(int));
-	if (error_cuda != cudaSuccess) {
-		return error_cuda;
-	}
-	return cudaSuccess;
-}*/
-
-
-void CellularAutomata1D::freeMemoryOnGPU(int *dev_variable) {
-	cudaFree(dev_variable);
 }
 
 

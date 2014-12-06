@@ -1,18 +1,20 @@
+
 #include "Rule.h"
+#include "MemoryManager.h"
 
-
+using namespace std;
 
 /***** Life cycle *****/
 
-/*****
+/*	Constructor
 	The implicite constructor
 */
 Rule::Rule() : m_size(0), m_numberOfNeighbours(0) {
-	m_ruleTable = (int*)malloc(m_size * sizeof(int));
+	m_ruleTable = MemoryManager::cpu_allocArray<int>(m_size);
 }
 
 
-/*****
+/*	Constructor
 	Gets the number of neighbours.
 	*****
 	Calculates the size of the rule table.
@@ -21,11 +23,11 @@ Rule::Rule() : m_size(0), m_numberOfNeighbours(0) {
 Rule::Rule(unsigned int numberOfNeighbours) 
 	: m_numberOfNeighbours(numberOfNeighbours) {
 	m_size = calcSize();
-	m_ruleTable = (int*)malloc(m_size * sizeof(int));
+	m_ruleTable = MemoryManager::cpu_allocArray<int>(m_size);
 }
 
 
-/*****
+/*	Constructor
 	Gets the new rule table and the number of neighbours.
 	*****
 	Calculates the size of the rule table.
@@ -35,31 +37,27 @@ Rule::Rule(unsigned int numberOfNeighbours)
 Rule::Rule(int *ruleTable, unsigned int numberOfNeighbours)
 	: m_numberOfNeighbours(numberOfNeighbours) {
 	m_size = calcSize();
-	const size_t SIZE = m_size * sizeof(int);
-	m_ruleTable = (int*)malloc(SIZE);
-	memcpy(m_ruleTable, ruleTable, SIZE);
+	m_ruleTable = MemoryManager::cpu_allocArray<int>(m_size);
+	copy(ruleTable, ruleTable + m_size, m_ruleTable);
 }
 
 
-/*****
+/*	Constructor
 	Copy constructor
 */
 Rule::Rule(const Rule &rule) {
 	m_size = rule.m_size;
 	m_numberOfNeighbours = rule.m_numberOfNeighbours;
-	const size_t SIZE = m_size * sizeof(int);
-	m_ruleTable = (int*)malloc(SIZE);
-	memcpy(m_ruleTable, rule.m_ruleTable, SIZE);
+	m_ruleTable = MemoryManager::cpu_allocArray<int>(m_size);
+	copy(rule.m_ruleTable, rule.m_ruleTable + m_size, m_ruleTable);
 }
 
 
-/*****
+/*	Destructor
 	Frees the rule table memory.
 */
 Rule::~Rule() {
-	if (m_ruleTable) {
-		free(m_ruleTable);
-	}
+	MemoryManager::cpu_freeArray(m_ruleTable);
 }
 
 
@@ -74,19 +72,31 @@ unsigned int Rule::calcSize() {
 
 /***** Operators *****/
 
-//TODO: rewrite the operator= for int*
 Rule& Rule::operator=(const Rule &rule) {
 	if (this != &rule) {
-		if (m_ruleTable) {
-			free(m_ruleTable);
-		}
+		MemoryManager::cpu_freeArray(m_ruleTable);
 		m_numberOfNeighbours = rule.m_numberOfNeighbours;
 		m_size = rule.m_size;
-		const size_t SIZE = m_size * sizeof(int);
-		m_ruleTable = (int*)malloc(SIZE);
-		memcpy(m_ruleTable, rule.m_ruleTable, SIZE);
+		m_ruleTable = MemoryManager::cpu_allocArray<int>(m_size);
+		copy(rule.m_ruleTable, rule.m_ruleTable + m_size, m_ruleTable);
 	}
 	return *this;
+}
+
+
+bool Rule::operator==(const Rule &rule) {
+	if (m_size != rule.m_size) {
+		return false;
+	}
+	if (m_numberOfNeighbours != rule.m_numberOfNeighbours) {
+		return false;
+	}
+	for (unsigned int i = 0; i < m_size; ++i) {
+		if (m_ruleTable[i] != rule.m_ruleTable[i]) {
+			return false;
+		}
+	}
+	return true;
 }
 
 
@@ -94,7 +104,8 @@ istream& operator>>(istream &is, Rule &rule) {
 	is >> rule.m_numberOfNeighbours;
 	rule.m_size = rule.calcSize();
 
-	rule.m_ruleTable = (int*)malloc(rule.m_size * sizeof(int));
+	MemoryManager::cpu_freeArray(rule.m_ruleTable);
+	rule.m_ruleTable = MemoryManager::cpu_allocArray<int>(rule.m_size);
 
 	int value;
 	for (int i = 0; (i < rule.m_size) && (is >> value); ++i) {
@@ -115,7 +126,7 @@ ostream& operator<<(ostream &os, const Rule &rule) {
 		}
 		os << "-> " << rule.m_ruleTable[i] << endl;
 	}
-	Rule::memFree(states, rule.m_size);
+	MemoryManager::cpu_freeArray(states, rule.m_size);
 	return os;
 }
 
@@ -123,6 +134,12 @@ ostream& operator<<(ostream &os, const Rule &rule) {
 
 /***** Setters *****/
 
+/***** Set Rule Table Value 
+	Gets the new element index.
+	Gets the new element value.
+	*****
+	Sets the specified value.
+*/
 void Rule::setRuleTableValue(unsigned int index, int value) {
 	//UNDONE: check if the index is to low or to high .. Exception
 	m_ruleTable[index] = value;
@@ -132,6 +149,8 @@ void Rule::setRuleTableValue(unsigned int index, int value) {
 
 /***** Getters *****/
 
+/*****
+*/
 int Rule::getRuleTableValue(unsigned int index) {
 	//UNDONE: check if the index is to low or to high .. Exception
 	return m_ruleTable[index];
@@ -148,40 +167,52 @@ unsigned int Rule::size() {
 }
 
 
-/**** Private special methods *****/
-/*
-	***Static*** method which allocates memory for a 2 dimensional array.
+/**** Static Methods *****/
+
+/***** Memory managment
+	Gets the height.
+	Gets the width.
+	*****
+	Allocates a 2 dimensional array.
 */
 int** Rule::memAlloc(unsigned int width, unsigned int height) {
 	int **arr;
-	arr = (int**)malloc(height * sizeof(int*));
+	arr = new int*[height];
 	for (int i = 0; i < height; ++i) {
-		arr[i] = (int*)calloc(width, sizeof(int));
+		arr[i] = new int[width];
+		for (int j = 0; j < width; ++j) {
+			arr[i][j] = 0;
+		}
 	}
 	return arr;
 }
 
 
+/***** Memory management
+	
+*/
 void Rule::memFree(int **arr, unsigned int size) {
 	//UNDONE: some modifications needed..
 	for (unsigned int i = 0; i < size ; ++i) {
-		free(arr[i]);
+		if (arr[i]) {
+			delete[] arr[i];
+		}
 	}
 	if (arr) {
-		free(arr);
+		delete[] arr;
 	}
 }
 
 /***** Special methods *****/
 
 int** Rule::makeStates() const {
-	unsigned int width = m_numberOfNeighbours + 1;
-	unsigned int height = m_size;
-	int** states = memAlloc(width, height);
+	unsigned int rows = m_size;
+	unsigned int columns = m_numberOfNeighbours + 1;
+	int** states = MemoryManager::cpu_zAllocArray<int>(rows, columns);
 
-	for (int i = 0; i < height; ++i) {
+	for (int i = 0; i < rows; ++i) {
 		int value = i;
-		for (int j = width - 1; j >= 0; --j) {
+		for (int j = columns - 1; j >= 0; --j) {
 			if (value != 0) {
 				if (value % 2 == 1) {
 					states[i][j] = 1;
@@ -221,7 +252,9 @@ int Rule::setNewState(int *states, int size, int poz) {
 	}
 
 	int *bits;		// tmp for creating the number
-	bits = (int*)malloc((m_numberOfNeighbours + 1) * sizeof(int));
+	int columns = m_numberOfNeighbours + 1;
+	bits = MemoryManager::cpu_allocArray<int>(columns);
+
 	int i = 0;
 	while (begin != end) {	// fill the bits vector with the bits between the range
 		bits[i++] = states[begin];
@@ -232,9 +265,7 @@ int Rule::setNewState(int *states, int size, int poz) {
 	bits[i++] = states[end];	// push the last element into the vector
 	int rulePosition = formNumber(bits, i);	// creating a decimalnumber from the bits
 
-	if (bits) {
-		free(bits);
-	}
+	MemoryManager::cpu_freeArray(bits);
 
 	return m_ruleTable[rulePosition];
 }

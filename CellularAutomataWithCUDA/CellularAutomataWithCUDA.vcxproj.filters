@@ -10,6 +10,21 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{fb646b90-a2b6-4cbd-b07e-f2ed594311ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MemoryManager">
+      <UniqueIdentifier>{b3f6edf1-3e6f-4aa3-888b-9dcb3f23d714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CellularAutomata">
+      <UniqueIdentifier>{1e34068d-8595-4570-9a87-bd9d208ac4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rule">
+      <UniqueIdentifier>{44e15933-b4e9-42b5-82d6-b6b1e809e414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CellularAutomata">
+      <UniqueIdentifier>{0726421c-7382-4372-8318-f46880da9790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rule">
+      <UniqueIdentifier>{4ba5dbeb-9490-4068-8a11-864e0096d493}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="short_initial_ca.txt" />
@@ -23,33 +38,36 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="CellularAutomata1D.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
     <CudaCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="Rule.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
+    <CudaCompile Include="CellularAutomata1Dcuda.cu">
+      <Filter>Source Files\CellularAutomata</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellularAutomata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rule.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\CellularAutomata</Filter>
     </ClInclude>
     <ClInclude Include="CellularAutomata1D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\CellularAutomata</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\MemoryManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Rule.h">
+      <Filter>Header Files\Rule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Rule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CellularAutomata1D.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\CellularAutomata</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule.cpp">
+      <Filter>Source Files\Rule</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

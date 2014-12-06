@@ -7,9 +7,6 @@
 #include <string>
 #include <cmath>	// for the pow function
 
-#include <stdlib.h>
-
-using namespace std;
 
 class Rule {
 
@@ -25,8 +22,6 @@ private:
 	int formNumber(int *bits, int size);
 
 	unsigned int calcSize();
-
-	
 
 public:
 
@@ -44,8 +39,9 @@ public:
 
 	// Operators
 	Rule& operator=(const Rule &rule);
-	friend istream& operator>>(istream &is, Rule &rule);
-	friend ostream& operator<<(ostream &os, const Rule &rule);
+	bool operator==(const Rule &rule);
+	friend std::istream& operator>>(std::istream &is, Rule &rule);
+	friend std::ostream& operator<<(std::ostream &os, const Rule &rule);
 
 	// Setters
 	void setRuleTableValue(unsigned int index, int value);

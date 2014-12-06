@@ -1,6 +1,7 @@
 
 #include "CellularAutomata1D.h"
 #include "Rule.h"
+#include "MemoryManager.h"
 
 #include <iostream>
 
@@ -22,10 +23,7 @@ int main() {
 
 	ca.setRule("in_rule.txt");
 
-	CellularAutomata1D caForGPU;
-	caForGPU = ca;
-
-	for (int i = 0; i < 70; ++i) {
+	for (int i = 0; i < 2; ++i) {
 		cout << ca << endl;
 		ca.iterate(1);
 	}
