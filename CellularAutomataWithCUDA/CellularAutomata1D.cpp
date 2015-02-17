@@ -131,11 +131,11 @@ istream& operator>>(istream &is, CellularAutomata1D &ca) {
 /***** Operator
 */
 ostream& operator<<(ostream &os, const CellularAutomata1D &ca) {
-	os << "The status: " << endl;
+	//os << "The status: " << endl;
 	for (unsigned int i = 0; i < ca.m_size; ++i) {
 		os << ca.m_h_caState[i] << " ";
 	}
-	os << endl << *ca.m_h_rule;
+	//os << endl << *ca.m_h_rule;
 	return os;
 }
 
@@ -220,7 +220,7 @@ int* CellularAutomata1D::cloneCA() {
 
 /***** Special methods *****/
 
-int CellularAutomata1D::iterate(unsigned int t) {
+void CellularAutomata1D::iterate_cpu(unsigned int t) {
 	for (unsigned int it = 0; it < t; ++it) {	// main cycle
 		int *temp_caState = MemoryManager::cpu_allocArray<int>(m_capacity);	// allocating memory for a temp state array
 		for (unsigned int i = 0; i < m_size; ++i) {	// lets go through the current state
@@ -228,11 +228,9 @@ int CellularAutomata1D::iterate(unsigned int t) {
 		}
 		copy(temp_caState, temp_caState + m_size, m_h_caState);	// refreshing the current state
 	}
-	return 0;
 }
 
 
-int CellularAutomata1D::draw(int canvas) {
+void CellularAutomata1D::draw(int canvas) {
 
-	return 0;
 }

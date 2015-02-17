@@ -3,6 +3,7 @@
 #include "Rule.h"
 #include "MemoryManager.h"
 
+#include <boost\shared_ptr.hpp>
 #include <iostream>
 
 using namespace std;
@@ -25,8 +26,10 @@ int main() {
 
 	for (int i = 0; i < 2; ++i) {
 		cout << ca << endl;
-		ca.iterate(1);
+		ca.iterate_gpu(1);
 	}
+
+	ca.iterate_gpu(1);
 
 
 	cout << "over" << endl;

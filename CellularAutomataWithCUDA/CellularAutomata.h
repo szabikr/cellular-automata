@@ -24,9 +24,9 @@ protected:
 	//virtual void* getCAStatus() = 0;
 
 	// Special methods
-	virtual int iterate(unsigned int t) = 0;
-	//virtual int iterateGPU(unsigned int t) = 0;
-	virtual int draw(int canvas) = 0;
+	virtual void iterate_cpu(unsigned int t) = 0;
+	virtual void iterate_gpu(unsigned int t) = 0;
+	virtual void draw(int canvas) = 0;
 
 };
 

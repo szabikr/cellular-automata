@@ -1,38 +1,23 @@
 #include "CellularAutomata1D.h"
-#include "Rule.h"
+//#include "Rule.h"
+#include "Rule.cpp"
 
 #include "cuda.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-#ifndef __CUDACC__  
-	#define __CUDACC__
-#endif
+#include <iostream>
 
-__constant__ Rule *m_d_const_rule;
+using namespace std;
+
+__constant__ Rule *d_const_rule;
 
 /*
 The CUDA kernel for the iteration
 */
 
-__global__ void iteration_kernel(int *status, int status_size, int t) {
-	//int tmp_status = -1;
-
-	//int tid = threadIdx.x + blockIdx.x * blockDim.x;
-
-	//for (int i = 0; i < t; ++i) {
-	//	while (tid < status_size) {
-
-	//		//tmp_status = rule.setNewStatusGPU(status, status_size, tid);
-	//		tid += blockDim.x * gridDim.x;
-
-	//	}
-	//	__syncthreads();
-
-	//	status[tid] = tmp_status;
-
-	//	__syncthreads();
-	//}
+__global__ void iteration_kernel(int *state, int state_size, Rule *rule, unsigned int t) {
+	rule->setNewState(state, state_size, 0);
 }
 
 
@@ -42,73 +27,23 @@ to the GPU's memory and after that, calls the kernel
 to actually make the iteratons on the GPU
 */
 
-int CellularAutomata1D::iterateGPU(unsigned int t) {
+void CellularAutomata1D::iterate_gpu(unsigned int t) {
 
+	Rule* d_rule;
+	cudaMalloc((void**)&d_rule, sizeof(Rule));
+	cudaMemcpy(d_rule, m_h_rule, sizeof(Rule), cudaMemcpyHostToDevice);
 
-	// creating the constant memory on the gpu, it'll be the rule object
-	//if (m_d_const_rule == NULL) {
-	//	cudaMemcpyToSymbol(m_d_const_rule, m_h_rule, sizeof(Rule));
-	//}
+	hostRuleTableToDevice(*m_h_rule, *d_rule);
 
-	//int *status;
-	////int *rule;
-	//
-	//int *dev_status;
+	cudaMalloc((void**)&m_d_caState, m_capacity * sizeof(int));
+	cudaMemcpy(m_d_caState, m_h_caState, m_capacity * sizeof(int), cudaMemcpyHostToDevice);
+	
 
-	//// copy the class variables to int pointers for the cuda functions (CPU)
-	//status = new int[m_caStatus.size()];
-	//for (unsigned int i = 0; i < m_caStatus.size(); ++i) {
-	//	status[i] = m_caStatus[i];
-	//}
+	//cudaMemcpyToSymbol(d_const_rule, m_h_rule, sizeof(Rule));
 
-	///*rule = new int[m_rule.size()];
-	//for (unsigned int i = 0; i < m_rule.size(); ++i) {
-	//	rule[i] = m_rule.getRuleTableValue(i);
-	//}*/
+	cout << "Kernel call.." << endl;
+	iteration_kernel<<< 1, 1 >>>(m_d_caState, m_size, d_rule, t);
 
-	//cudaError_t error;
+	cudaMemcpy(m_h_caState, m_d_caState, m_capacity * sizeof(int), cudaMemcpyDeviceToHost);
 
-	//// allocating the memory on the GPU
-	//error = cudaMalloc((void**)&dev_status, m_caStatus.size() * sizeof(int));
-	//if (error != cudaSuccess){
-	//	cout << "iterateGPU has ended with error: " << cudaGetErrorString(error) << endl;
-	//	return 1;
-	//}
-
-	///*error = cudaMalloc((void**)&dev_rule, m_rule.size() * sizeof(int));
-	//if (error != cudaSuccess) {
-	//	cout << "iterateGPU has ended with error: " << cudaGetErrorString(error) << endl;
-	//	return 1;
-	//}*/
-
-	//// copying data from CPU to GPU
-	//error = cudaMemcpy(dev_status, status, m_caStatus.size() * sizeof(int), cudaMemcpyHostToDevice);
-	//if (error != cudaSuccess) {
-	//	cout << "iterateGPU has ended with error: " << cudaGetErrorString(error) << endl;
-	//	return 1;
-	//}
-
-	///*error = cudaMemcpy(dev_rule, rule, m_rule.size() * sizeof(int), cudaMemcpyHostToDevice);
-	//if (error != cudaSuccess) {
-	//	cout << "iterateGPU has ended with error: " << cudaGetErrorString(error) << endl;
-	//	return 1;
-	//}*/
-
-	//iteration_kernel <<< 128, 128 >>>(dev_status, m_caStatus.size(), t);
-
-	//error = cudaMemcpy(status, dev_status, m_caStatus.size() * sizeof(int), cudaMemcpyDeviceToHost);
-
-	//for (unsigned int i = 0; i < m_caStatus.size(); ++i) {
-	//	m_caStatus[i] = status[i];
-	//}
-
-	//// destroying the used memory
-	//delete[] status;
-	////delete[] rule;
-
-	//cudaFree(dev_status);
-	//cudaFree(dev_rule);
-
-	////iterate(t);
-	return 0;
 }

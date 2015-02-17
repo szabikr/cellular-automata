@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{0a00c144-4879-46e6-a6f2-ba1b126197b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{47563062-fe1e-429c-8710-f363c3798cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Header Files">
+      <UniqueIdentifier>{1bef757a-db06-40e1-8c46-24d39e70a2e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Source Files">
+      <UniqueIdentifier>{98b477a1-e841-4963-a781-884b8572ba7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helper">
+      <UniqueIdentifier>{b8a4bd34-048c-47f3-8783-52639c49d1d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logger">
+      <UniqueIdentifier>{021ea13e-180c-43ac-9cf1-6e78c7cd5ab4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DeviceVector.h">
+      <Filter>Containers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceAllocator.h">
+      <Filter>Containers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HostAllocator.hpp">
+      <Filter>Containers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.hpp">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleLogger.hpp">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="FileLogger.hpp">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="HostVector.hpp">
+      <Filter>Containers\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceVector.cpp">
+      <Filter>Containers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceAllocator.cpp">
+      <Filter>Containers\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="caLog.txt" />
+  </ItemGroup>
+</Project>

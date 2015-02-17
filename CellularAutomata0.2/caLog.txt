@@ -1,0 +1,6 @@
+[1/17 15:35:11]Main: I'm working!
+[1/17 15:35:11]Main: I'm writing out value of a: 11
+[1/17 15:44:4]Main: I'm working!
+[1/17 15:44:4]Main: I'm writing out value of a: 11
+[1/17 15:45:1] Main: I'm working!
+[1/17 15:45:1] Main: I'm writing out value of a: 11

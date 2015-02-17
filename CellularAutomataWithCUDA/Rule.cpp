@@ -2,6 +2,9 @@
 #include "Rule.h"
 #include "MemoryManager.h"
 
+#ifndef RULE_HC
+#define RULE_HC
+
 using namespace std;
 
 /***** Life cycle *****/
@@ -167,42 +170,6 @@ unsigned int Rule::size() {
 }
 
 
-/**** Static Methods *****/
-
-/***** Memory managment
-	Gets the height.
-	Gets the width.
-	*****
-	Allocates a 2 dimensional array.
-*/
-int** Rule::memAlloc(unsigned int width, unsigned int height) {
-	int **arr;
-	arr = new int*[height];
-	for (int i = 0; i < height; ++i) {
-		arr[i] = new int[width];
-		for (int j = 0; j < width; ++j) {
-			arr[i][j] = 0;
-		}
-	}
-	return arr;
-}
-
-
-/***** Memory management
-	
-*/
-void Rule::memFree(int **arr, unsigned int size) {
-	//UNDONE: some modifications needed..
-	for (unsigned int i = 0; i < size ; ++i) {
-		if (arr[i]) {
-			delete[] arr[i];
-		}
-	}
-	if (arr) {
-		delete[] arr;
-	}
-}
-
 /***** Special methods *****/
 
 int** Rule::makeStates() const {
@@ -239,8 +206,8 @@ int Rule::formNumber(int *bits, int size) {
 }
 
 
-int Rule::setNewState(int *states, int size, int poz) {
-	int begin = poz - m_numberOfNeighbours / 2;	// deceide where does the range start
+__device__ int Rule::setNewState(int *state, int size, int poz) {
+	/*int begin = poz - m_numberOfNeighbours / 2;	// deceide where does the range start
 	int end = poz + m_numberOfNeighbours / 2;	// deceide where does the range end
 
 	if (begin < 0) {					// if we need to use the chain behaviour
@@ -257,17 +224,28 @@ int Rule::setNewState(int *states, int size, int poz) {
 
 	int i = 0;
 	while (begin != end) {	// fill the bits vector with the bits between the range
-		bits[i++] = states[begin];
+		bits[i++] = state[begin];
 		if (++begin >= size) {	// if we nee to use the chain behaviour
 			begin = 0;
 		}
 	}
-	bits[i++] = states[end];	// push the last element into the vector
+	bits[i++] = state[end];	// push the last element into the vector
 	int rulePosition = formNumber(bits, i);	// creating a decimalnumber from the bits
 
 	MemoryManager::cpu_freeArray(bits);
 
-	return m_ruleTable[rulePosition];
+	return m_ruleTable[rulePosition];*/
+	return 0;
+}
+
+void hostRuleTableToDevice(const Rule &h_rule, Rule &d_rule) {
+	int *hostRuleTable;
+
+	cudaMalloc((void**)&hostRuleTable, h_rule.m_size * sizeof(int));
+	cudaMemcpy(hostRuleTable, h_rule.m_ruleTable, h_rule.m_size * sizeof(int), cudaMemcpyHostToDevice);
+
+	cudaMemcpy(&(d_rule.m_ruleTable), &hostRuleTable, sizeof(int*), cudaMemcpyHostToDevice);
+
 }
 
 /*
@@ -286,3 +264,5 @@ int Rule::calcNewStateGPU(int *status, int *rule, unsigned int n, int poz) {
 	return 0;
 }
 */
+
+#endif	//

@@ -18,9 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConsoleLogger.hpp" />
+    <ClInclude Include="DeviceAllocator.h" />
+    <ClInclude Include="DeviceVector.h" />
+    <ClInclude Include="FileLogger.hpp" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="HostAllocator.hpp" />
+    <ClInclude Include="HostVector.hpp" />
+    <ClInclude Include="Logger.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DeviceAllocator.cpp" />
+    <ClCompile Include="DeviceVector.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="caLog.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AAEFC9F4-7290-457C-BAE8-536A0BD8CA0A}</ProjectGuid>
-    <RootNamespace>CellularAutomataWithCUDA</RootNamespace>
+    <ProjectGuid>{7683B568-6C5F-4F82-A0C5-025248A96BAD}</ProjectGuid>
+    <RootNamespace>CellularAutomata0_2</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -68,15 +86,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\boost_1_57_0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\boost_1_57_0\lib32-msvc-12.0;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost_1_57_0;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\boost_1_57_0\lib32-msvc-12.0;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,10 +105,6 @@
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
 copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
-    <CudaCompile>
-      <GPUDebugInfo>false</GPUDebugInfo>
-      <HostDebugInfo>false</HostDebugInfo>
-    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -160,28 +168,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CudaCompile Include="CellularAutomata1Dcuda.cu" />
-    <CudaCompile Include="main.cpp" />
-    <CudaCompile Include="Rule.cu" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="initial_ca.txt" />
-    <Text Include="in_rule.txt" />
-    <Text Include="short_initial_ca.txt" />
-    <Text Include="testCA1D.txt" />
-    <Text Include="testRule.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CellularAutomata.h" />
-    <ClInclude Include="CellularAutomata1D.h" />
-    <ClInclude Include="MemoryManager.h" />
-    <ClInclude Include="Rule.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="CellularAutomata1D.cpp" />
-    <ClCompile Include="Rule.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 6.5.targets" />

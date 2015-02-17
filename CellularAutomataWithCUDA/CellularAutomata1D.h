@@ -55,9 +55,9 @@ public:
 	unsigned int getSize() const;
 
 	// Special methods
-	int iterate(unsigned int t);
-	int iterateGPU(unsigned int t);
-	int draw(int canvas);
+	void iterate_cpu(unsigned int t);
+	void iterate_gpu(unsigned int t);
+	void draw(int canvas);
 
 
 };

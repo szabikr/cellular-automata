@@ -7,11 +7,13 @@
 #include <string>
 #include <cmath>	// for the pow function
 
+#include "cuda_runtime.h"
 
 class Rule {
 
 private:
 	int *m_ruleTable;
+
 	unsigned int m_size;
 	unsigned int m_numberOfNeighbours;
 
@@ -24,11 +26,6 @@ private:
 	unsigned int calcSize();
 
 public:
-
-	// !!!!!!! static function to calculate the next status for a ca !!!!
-	//static int calcNewStateGPU(int *status, int *rule, unsigned int n, int poz);
-
-	//static int 
 
 	// Life cycle
 	Rule();
@@ -52,13 +49,11 @@ public:
 	unsigned int size();
 
 	// Special methods
-	int setNewState(int *states, int size, int poz);	// calc new value
+	__device__ int setNewState(int *state, int size, int poz);	// calc new value
 	//int setNewStatusGPU(int *status, unsigned int n, int poz);	// calc new value on gpu
 
-
-	// static methods
-	static int** memAlloc(unsigned int width, unsigned int height);
-	static void memFree(int **arr, unsigned int size);
+	// for cuda copy
+	friend void hostRuleTableToDevice(const Rule &h_rule, Rule &d_rule);
 };
 
 #endif // RULE_H
