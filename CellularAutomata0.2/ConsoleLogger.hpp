@@ -1,4 +1,4 @@
-
+/*
 #ifndef CONSOLE_LOGGER_HPP
 #define CONSOLE_LOGGER_HPP
 
@@ -9,7 +9,8 @@
 
 namespace ca
 {
-	class ConsoleLogger : public Logger
+	template <class T>
+	class ConsoleLogger : public Logger <T>
 	{
 	public:
 		ConsoleLogger(std::string who) : Logger(who)
@@ -47,3 +48,4 @@ namespace ca
 }
 
 #endif	// CONSOLE_LOGGER_HPP
+*/

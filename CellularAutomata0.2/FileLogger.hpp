@@ -1,4 +1,4 @@
-
+/*
 #ifndef FILE_LOGGER_HPP
 #define FILE_LOGGER_HPP
 
@@ -59,3 +59,4 @@ namespace ca
 
 
 #endif	// FILE_LOGGER_HPP
+*/

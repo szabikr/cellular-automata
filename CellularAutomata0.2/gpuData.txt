@@ -1,0 +1,22 @@
+ --- General Information for device 0 --- 
+
+Name: GeForce GT 720M
+Compute capability: 2.1
+Clock rate: 1550000
+Device copy overlap Enabled
+
+ --- Memory Infomarion for device 0 --- 
+
+Total global memory: 2147483648
+Total constant memory: 65536
+Max memory pitch: 2147483647
+Texture Alignment: 512
+
+ --- Mp Information for device 0 --- 
+
+Multiprocessor count: 2
+Shared memory per block: 32768
+Threads in warp: 32
+Max threads per block: 1024
+Max thread per dimensions: (1024, 1024, 64)
+Max grid per dimensions: (65535, 65535, 65535)

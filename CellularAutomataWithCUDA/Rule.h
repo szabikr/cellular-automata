@@ -10,7 +10,6 @@
 #include "cuda_runtime.h"
 
 class Rule {
-
 private:
 	int *m_ruleTable;
 

@@ -18,59 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BaseAllocator.hpp" />
-    <ClInclude Include="BaseArray.hpp" />
-    <ClInclude Include="ConsoleLogger.hpp" />
-    <ClInclude Include="CudaHeaders.h" />
-    <ClInclude Include="DeviceAllocator.hpp" />
-    <ClInclude Include="DeviceArray.hpp" />
-    <ClInclude Include="DeviceCellularAutomata.hpp" />
-    <ClInclude Include="DeviceRule.hpp" />
-    <ClInclude Include="DeviceTimer.hpp" />
-    <ClInclude Include="DeviceVector.hpp" />
-    <ClInclude Include="DimensionConverter.hpp" />
-    <ClInclude Include="FileLogger.hpp" />
-    <ClInclude Include="BinaryRuleGenerator.h" />
-    <ClInclude Include="GlobalFunctions.cu.h" />
-    <ClInclude Include="GpuDataListing.h" />
-    <ClInclude Include="Helper.h" />
-    <ClInclude Include="Host2DRule.hpp" />
-    <ClInclude Include="HostAllocator.hpp" />
-    <ClInclude Include="HostArray.hpp" />
-    <ClInclude Include="HostCellularAutomata.hpp" />
-    <ClInclude Include="HostRule.hpp" />
-    <ClInclude Include="HostTimer.hpp" />
-    <ClInclude Include="HostVector.hpp" />
-    <ClInclude Include="Logger.hpp" />
-    <ClInclude Include="MemoryCopy.hpp" />
-    <ClInclude Include="RandomGenerator.hpp" />
-    <ClInclude Include="Timer.hpp" />
-    <ClInclude Include="Utility.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BinaryRuleGenerator.cpp" />
-    <ClCompile Include="HostVector_implementation.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="TestMain.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="2dCaState.txt" />
-    <Text Include="caLog.txt" />
-    <Text Include="caState.txt" />
-    <Text Include="gameOfLifeRule.txt" />
-    <Text Include="gpuData.txt" />
-    <Text Include="rule.txt" />
-    <Text Include="vectorInput.txt" />
-    <Text Include="vectorOutput.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="CudaTestMain.cu" />
-    <CudaCompile Include="GlobalFunctions.cu" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7683B568-6C5F-4F82-A0C5-025248A96BAD}</ProjectGuid>
-    <RootNamespace>CellularAutomata0_2</RootNamespace>
+    <ProjectGuid>{7F98463D-60CB-4765-8691-450DC568C913}</ProjectGuid>
+    <RootNamespace>ObjectOrientedCudaTry</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -200,6 +150,16 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <TargetMachinePlatform>64</TargetMachinePlatform>
     </CudaCompile>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bar.h" />
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="Foo.h" />
+    <ClInclude Include="MultiplyEvaluator.h" />
+    <ClInclude Include="PlusEvaluator.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 6.5.targets" />

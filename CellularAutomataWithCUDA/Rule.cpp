@@ -207,7 +207,7 @@ int Rule::formNumber(int *bits, int size) {
 
 
 __device__ int Rule::setNewState(int *state, int size, int poz) {
-	/*int begin = poz - m_numberOfNeighbours / 2;	// deceide where does the range start
+	int begin = poz - m_numberOfNeighbours / 2;	// deceide where does the range start
 	int end = poz + m_numberOfNeighbours / 2;	// deceide where does the range end
 
 	if (begin < 0) {					// if we need to use the chain behaviour
@@ -234,7 +234,7 @@ __device__ int Rule::setNewState(int *state, int size, int poz) {
 
 	MemoryManager::cpu_freeArray(bits);
 
-	return m_ruleTable[rulePosition];*/
+	return m_ruleTable[rulePosition];
 	return 0;
 }
 

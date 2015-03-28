@@ -11,23 +11,25 @@ namespace ca
 {
 	class Logger
 	{
-	protected:
-		std::string	m_bWho;
-		std::ostream *m_bOut;
-
 	public:
-		Logger(std::string who)
+		static void log(const std::string& who, const std::string& action)
 		{
-			m_bWho = who;
+			std::clog << getTimeStamp() << " " << who << ": " << action << std::endl;
 		}
 
-		virtual void log(std::string action) = 0;
-
-
-		virtual std::string getTimeStamp()
+		template <class T>
+		static void log(const std::string& who, const std::string& action, const T& what)
 		{
+			std::clog << getTimeStamp() << " " << who << ": " << action << ": " << what << std::endl;
+		}
+
+	private:
+		static std::string getTimeStamp()
+		{	// getting the actual time
 			time_t now = time(0);
 			tm *ltm = localtime(&now);
+
+			// TODO: We need more detailed time!
 
 			std::stringstream ss;
 

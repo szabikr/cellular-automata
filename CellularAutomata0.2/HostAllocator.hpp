@@ -2,75 +2,96 @@
 #ifndef HOST_ALLOCATOR_HPP
 #define HOST_ALLOCATOR_HPP
 
-#include <iostream>
+#include "BaseAllocator.hpp"
+
+#include "Logger.hpp"
+
+#include <string>
 
 namespace ca
 {
+
 	template <typename T>
 	class HostAllocator
+		: public BaseAllocator<T>
 	{
-		typedef T value_type;
-		typedef T* pointer;
 
 	public:
-		HostAllocator()
-		{
-			std::clog << "HostAllocator Constructor: " << this << std::endl;
-		}
+
+		/* Class name */
+		const std::string name = "HostAllocator";	// For the Logger class
 
 
-		HostAllocator(const HostAllocator<T>& other)
-		{
-			std::clog << "Host allocator Copy Constructor call..." << std::endl;
-		}
+		///* No-argument construcotr has no effect.
+		//*/
+		//inline HostAllocator() {}
 
+		///* Copy constructor has no effect.
+		//*/
+		//inline HostAllocator(volatile const HostAllocator&) {}
 
-		~HostAllocator()
-		{
-			std::clog << "HostAllocator Destructor: " << this << std::endl;
-		}
+		///* Constructor from other allocator has no effect.
+		//*/
+		//template <typename U>
+		//inline HostAllocator(volatile const HostAllocator<U>&) {}
 
+		///* Destructor has no effect.
+		//*/
+		//inline ~HostAllocator() {}
 
-		pointer allocate(size_t size)
-		{
-			std::clog << "HostAllocator allocate call..." << std::endl;
+		
+		/* Allocating a chunk of memory on the host.
+		 * Returning a pointer to the allocated memory.
+		*/
+		pointer allocate(size_type size = DEFAULT_SIZE)
+		{	
 			pointer p = new value_type[size];
-			std::clog << "Allocated memory pointer: " << p << std::endl;
 			return p;
 		}
 
-
-		pointer allocAndInit(size_t size, value_type initVal)
+		/* Allocating a chunk of memory on the host.
+		 * Initializing the memory with 0.
+		 * Returning a pointer to the allocated memory.
+		*/
+		pointer clearAllocate(size_type size = DEFAULT_SIZE)
 		{
 			pointer p = allocate(size);
-			for (int i = 0; i < size; ++i)
-			{
-				p[i] = initVal;
+			std::memset(p, 0, size * sizeof(value_type));
+			return p;
+		}
+
+		/* Reallocating a new sized memory chunk.
+		 * Copying the old memory content to the new one.
+		 * Returning the pointer to that memory.
+		*/
+		pointer reallocate(pointer old, size_type oldSize, size_type newSize)
+		{	
+			size_type size = 0;
+			if (oldSize > newSize)
+			{	
+				size = newSize;
 			}
+			else
+			{
+				size = oldSize;
+			}
+			pointer p = allocate(newSize);
+			std::copy(old, old + size, p);
+			deallocate(old);
 			return p;
 		}
 
-
-		pointer reallocate(pointer p, size_t old_size, size_t new_size)
-		{
-			std::clog << "HostAllocator reallocate(not finished) call..." << std::endl;
-			// TODO: Implement the reallocation method.
-			return p;
-		}
-
-
+		/* Deallocating the memory pointed by the p parameter.
+		*/
 		void deallocate(pointer p)
 		{
-			std::clog << "HostAllocator deallocate call..." << std::endl;
-			std::clog << "Deallocating memory from pointer: " << p << std::endl;
 			if (p)
 			{
 				delete[] p;
 			}
+		
 		}
-
 	};
-
 }
 
 #endif	// HOST_ALLOCATOR_HPP

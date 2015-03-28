@@ -19,22 +19,52 @@
     <Filter Include="Logger">
       <UniqueIdentifier>{021ea13e-180c-43ac-9cf1-6e78c7cd5ab4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="About GPU">
+      <UniqueIdentifier>{5191557a-6c00-4ca1-a6eb-5aca2ffe19d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="About GPU\Header Files">
+      <UniqueIdentifier>{f574d2f3-73c1-435d-b029-02eb53688faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global Functions">
+      <UniqueIdentifier>{1ea0729a-fd73-40f2-8a1b-66ec3d597871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cellulat Automata">
+      <UniqueIdentifier>{aceb6cb4-7e86-4200-a1c3-7eb486451218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rule">
+      <UniqueIdentifier>{2eb33c09-8984-4026-8707-7c5c88646260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global Functions\Source Files">
+      <UniqueIdentifier>{552b8d79-809e-4c6c-b6d1-a4bf005acb3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global Functions\Header Files">
+      <UniqueIdentifier>{73f1e6d6-1cd9-422f-8081-3d3e55563e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inputs">
+      <UniqueIdentifier>{d413bc25-b0e8-48fe-9d0f-b6758b047ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{08e74813-88cc-463b-9201-492caef18c8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Allocators">
+      <UniqueIdentifier>{013e21ad-07a6-4743-9215-470a2d247e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Arrays">
+      <UniqueIdentifier>{d1e38cb4-b97d-4109-aa72-6c4bdbe1f58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rule\Generators">
+      <UniqueIdentifier>{d63c728c-652a-44ff-802f-08f2aba36eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rule\Generators\Header Files">
+      <UniqueIdentifier>{6a792899-3a60-452b-9fc3-40a0bf34f969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rule\Generators\Source Files">
+      <UniqueIdentifier>{79156394-de2f-48fb-ae81-6434ab2ddac9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DeviceVector.h">
-      <Filter>Containers\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Helper.h">
       <Filter>Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceAllocator.h">
-      <Filter>Containers\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HostAllocator.hpp">
-      <Filter>Containers\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.hpp">
-      <Filter>Logger</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleLogger.hpp">
       <Filter>Logger</Filter>
@@ -42,22 +72,122 @@
     <ClInclude Include="FileLogger.hpp">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="Logger.hpp">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="GpuDataListing.h">
+      <Filter>About GPU\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaHeaders.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceRule.hpp">
+      <Filter>Rule</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalFunctions.cu.h">
+      <Filter>Global Functions\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceCellularAutomata.hpp">
+      <Filter>Cellulat Automata</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomGenerator.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="HostRule.hpp">
+      <Filter>Rule</Filter>
+    </ClInclude>
+    <ClInclude Include="HostCellularAutomata.hpp">
+      <Filter>Cellulat Automata</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceTimer.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="HostTimer.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAllocator.hpp">
+      <Filter>Containers\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceAllocator.hpp">
+      <Filter>Containers\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="HostAllocator.hpp">
+      <Filter>Containers\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseArray.hpp">
+      <Filter>Containers\Arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceVector.hpp">
+      <Filter>Containers\Arrays</Filter>
+    </ClInclude>
     <ClInclude Include="HostVector.hpp">
-      <Filter>Containers\Header Files</Filter>
+      <Filter>Containers\Arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryCopy.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceArray.hpp">
+      <Filter>Containers\Arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="HostArray.hpp">
+      <Filter>Containers\Arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="DimensionConverter.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryRuleGenerator.h">
+      <Filter>Rule\Generators\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Host2DRule.hpp">
+      <Filter>Rule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="DeviceVector.cpp">
+    <ClCompile Include="TestMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="HostVector_implementation.cpp">
       <Filter>Containers\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeviceAllocator.cpp">
-      <Filter>Containers\Source Files</Filter>
+    <ClCompile Include="BinaryRuleGenerator.cpp">
+      <Filter>Rule\Generators\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="caLog.txt" />
+    <Text Include="vectorInput.txt" />
+    <Text Include="vectorOutput.txt" />
+    <Text Include="gpuData.txt">
+      <Filter>About GPU</Filter>
+    </Text>
+    <Text Include="caState.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="rule.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="gameOfLifeRule.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="2dCaState.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="CudaTestMain.cu">
+      <Filter>Main</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GlobalFunctions.cu">
+      <Filter>Global Functions\Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>
