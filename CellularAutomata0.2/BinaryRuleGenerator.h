@@ -1,6 +1,6 @@
 
-#ifndef RULE_GENERATOR_H
-#define RULE_GENERATOR_H
+#ifndef BINARY_RULE_GENERATOR_H
+#define BINARY_RULE_GENERATOR_H
 
 #include <string>
 #include <vector>
@@ -50,6 +50,14 @@ namespace ca
 		*/
 		void generateGameOfLifeRule(std::string fileName);
 
+		/* Generates 2D rule for Guo-Hall skeletonization
+		*/
+		void generateGuoHallRule(std::string fileName, int iter);
+
+		/* Generates 2D rule for Zhang-Suen skeletonization
+		*/
+		void generateZhangSuenRule(std::string fileName, int iter);
+
 	private:
 		/* Returns the number of 1 in the binary form of the number
 		*/
@@ -65,4 +73,4 @@ namespace ca
 	};
 }
 
-#endif // !RULE_GENERATOR_H
+#endif // !BINARY_RULE_GENERATOR_H

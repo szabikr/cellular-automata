@@ -61,6 +61,15 @@
     <Filter Include="Rule\Generators\Source Files">
       <UniqueIdentifier>{79156394-de2f-48fb-ae81-6434ab2ddac9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Skeletonization">
+      <UniqueIdentifier>{0044e2a7-edbe-4964-a524-34dd97a21477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skeletonization\Header Files">
+      <UniqueIdentifier>{25c5faa7-938a-409e-a65a-e50a19874c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skeletonization\Source Files">
+      <UniqueIdentifier>{af5b14c6-7732-4882-b59e-0dfc85c62583}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">
@@ -83,9 +92,6 @@
     </ClInclude>
     <ClInclude Include="DeviceRule.hpp">
       <Filter>Rule</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalFunctions.cu.h">
-      <Filter>Global Functions\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeviceCellularAutomata.hpp">
       <Filter>Cellulat Automata</Filter>
@@ -147,6 +153,24 @@
     <ClInclude Include="Host2DRule.hpp">
       <Filter>Rule</Filter>
     </ClInclude>
+    <ClInclude Include="GHSkeletonization.h">
+      <Filter>Skeletonization\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZSSkeletonization.h">
+      <Filter>Skeletonization\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeletonization.h">
+      <Filter>Skeletonization\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalFunctions.cu">
+      <Filter>Global Functions\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HostStochasticRule.hpp">
+      <Filter>Rule</Filter>
+    </ClInclude>
+    <ClInclude Include="StochasticRuleGenerator.h">
+      <Filter>Rule\Generators\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -159,6 +183,21 @@
       <Filter>Containers\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BinaryRuleGenerator.cpp">
+      <Filter>Rule\Generators\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GHSkeletonization.cpp">
+      <Filter>Skeletonization\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZSSkeletonization.cpp">
+      <Filter>Skeletonization\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeletonization.cpp">
+      <Filter>Skeletonization\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opencvMain.cu">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="StochasticRuleGenerator.cpp">
       <Filter>Rule\Generators\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -181,13 +220,37 @@
     <Text Include="2dCaState.txt">
       <Filter>Inputs</Filter>
     </Text>
+    <Text Include="guoHallRule.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="guoHallRuleIter0.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="guoHallRuleIter1.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="guoHallStochasticRule.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="zhangSuenRuleIter0.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="stochasticRuleIter0.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="stochasticRuleIter1.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="zhangSuenRuleIter1.txt">
+      <Filter>Inputs</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="CudaTestMain.cu">
       <Filter>Main</Filter>
     </CudaCompile>
-    <CudaCompile Include="GlobalFunctions.cu">
-      <Filter>Global Functions\Source Files</Filter>
+    <CudaCompile Include="m.cu">
+      <Filter>Main</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

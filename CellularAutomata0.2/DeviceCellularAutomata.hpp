@@ -2,8 +2,6 @@
 #ifndef DEVICE_CELLULAR_AUTOMATA_HPP
 #define DEVICE_CELLULAR_AUTOMATA_HPP
 
-#include "GlobalFunctions.cu.h"
-
 #include "DeviceArray.hpp"
 #include "DeviceRule.hpp"
 
@@ -13,7 +11,13 @@
 
 #include "Logger.hpp"
 
+//#include "GlobalFunctions.cu.h"
+#include "GlobalFunctions.cu"
+
 #include <algorithm>
+
+template <typename T>
+extern void callIterateCa(T* caState, dim3* caDimensions, T* rule, ca::size_ptr neighbours, ca::size_ptr iterations, dim3 gridSize, dim3 blockSize, std::size_t sharedMemSize);
 
 namespace ca
 {
@@ -103,15 +107,18 @@ namespace ca
 
 			// TODO: Event for time measuring.
 
-			/*const size_type blockSize = (m_bDimensions.x + NUMBER_OF_THREADS - 1) / NUMBER_OF_THREADS;
+			/*const size_type blockSize = (m_bDimensions.x + NUMBER_OF_THREADS - 1) / NUMBER_OF_THREADS;*/
 			
-			dim3 threadBlock;
-			threadBlock.x = NUMBER_OF_THREADS;
-			threadBlock.y = (size() + NUMBER_OF_THREADS - 1) / NUMBER_OF_THREADS;*/
+			dim3 gridSize;
+			dim3 blockSize;
+			blockSize.x = std::min((unsigned int)32, m_bDimensions.x);
+			blockSize.y = std::min((unsigned int)32, m_bDimensions.y);
 
-			size_type numberOfThreads = std::min((unsigned int)NUMBER_OF_THREADS, m_bDimensions.x);
+			//size_type numberOfThreads = std::min((unsigned int)NUMBER_OF_THREADS, m_bDimensions.x);
 
-			iterateCA<<<BLOCK_SIZE, numberOfThreads>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations);
+			callIterateCA<value_type>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, size());
+
+			//iterateCA<<<gridSize, blockSize>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations);
 
 			//for (std::size_t i = 0; i < numberOfIterations; ++i)
 			//{

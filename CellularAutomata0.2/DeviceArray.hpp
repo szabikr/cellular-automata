@@ -23,7 +23,7 @@ namespace ca
 	public:
 
 		/* Type of the elements in the array */
-		typedef Parent::value_type		value_type;
+		//typedef Parent::value_type		value_type;
 
 		/* Pointer type to the allocated memory for the elements */
 		typedef Parent::pointer			pointer;

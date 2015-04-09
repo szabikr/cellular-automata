@@ -1,18 +1,17 @@
 
-#ifndef HOST_RULE_HPP
-#define HOST_RULE_HPP
+#ifndef HOST_STOCHASTIC_RULE_HPP
+#define HOST_STOCHASTIC_RULE_HPP
 
 #include "HostArray.hpp"
 
 #include <cmath>
 #include <ctime>
-#include <iostream>
 
 namespace ca
 {
 	template <typename T>
-	class HostRule
-		: public HostArray < T >
+	class HostStochasticRule
+		: public HostArray<T>
 	{
 
 		template <typename U>
@@ -28,12 +27,11 @@ namespace ca
 		/* Number of neighbours who has effect on an element */
 		size_type						m_bNumberOfNeighbours;
 
-
 	public:
 
 		/* Generic Constructor (1,2,3 D rule)
 		*/
-		HostRule(pointer values, dim3 dimensions)
+		HostStochasticRule(pointer values, dim3 dimensions)
 			: Parent(values, dimensions)
 		{
 			calculateNumberOfNeighbours();
@@ -41,7 +39,7 @@ namespace ca
 
 		/* Constructor for 1D rule
 		*/
-		HostRule(pointer values, size_type width)
+		HostStochasticRule(pointer values, size_type width)
 			: Parent(values, width)
 		{
 			calculateNumberOfNeighbours();
@@ -49,7 +47,7 @@ namespace ca
 
 		/* Constructor for 2D rule
 		*/
-		HostRule(pointer values, size_type width, size_type height)
+		HostStochasticRule(pointer values, size_type width, size_type height)
 			: Parent(values, width, height)
 		{
 			calculateNumberOfNeighbours();
@@ -57,7 +55,7 @@ namespace ca
 
 		/* Constructor for 3D rule
 		*/
-		HostRule(pointer values, size_type width, size_type height, size_type depth)
+		HostStochasticRule(pointer values, size_type width, size_type height, size_type depth)
 			: Parent(values, width, height, depth)
 		{
 			calculateNumberOfNeighbours();
@@ -65,7 +63,7 @@ namespace ca
 
 		/* Copy constructor.
 		*/
-		HostRule(const HostRule& other)
+		HostStochasticRule(const HostRule& other)
 			: Parent(other), m_bNumberOfNeighbours(other.m_bNumberOfNeighbours)
 		{
 
@@ -73,7 +71,7 @@ namespace ca
 
 		/* Destructor. Does nothing at the moment.
 		*/
-		~HostRule() {}
+		~HostStochasticRule() {}
 
 	private:
 
@@ -108,103 +106,13 @@ namespace ca
 		{
 			return m_bNumberOfNeighbours;
 		}
-		
-		/* Applying this rule to a cellular automata state.
-		*/
-		virtual value_type applyRule(pointer caState, dim3 caDimensions, dim3 indexes)
-		{
-			int3 begin;			
-			int3 end;
-
-			// Initializing the starting neighbour position
-			begin.x = (int)indexes.x - 1;//m_bNumberOfNeighbours / 4;
-			begin.y = (int)indexes.y - 1;//m_bNumberOfNeighbours / 4;
-			begin.z = 0;
-			end.x = (int)indexes.x + 1;//m_bNumberOfNeighbours / 4;
-			end.y = (int)indexes.y + 1;//m_bNumberOfNeighbours / 4;
-			end.z = 0;
-
-			// Taking care of the borders at the beginning
-			if (begin.x < 0)
-			{
-				begin.x += (int)caDimensions.x;
-			}
-			if (begin.y < 0)
-			{
-				begin.y += (int)caDimensions.y;
-			}
-
-			// Taking care of the borders at the end
-			if (end.x >= caDimensions.x)
-			{
-				end.x -= (int)caDimensions.x;
-			}
-			if (end.y >= caDimensions.y)
-			{
-				end.y -= (int)caDimensions.y;
-			}
-
-			// Saving the value of the end variable
-			dim3 temp(end.x, end.y);
-
-			size_type i = 0;
-			size_type counter = 1;
-			size_type index;
-			// Iterating through the rows
-			while (end.y != begin.y)
-			{
-				// Iterating throuhg the columns
-				while (end.x != begin.x)
-				{
-					// Getting the right index
-					index = DimensionConverter::_3to1(caDimensions, end);
-					i += *(caState + index) * counter;
-					counter *= 2;
-					// Taking care of the borders (row)
-					if (--end.x < 0)
-					{
-						end.x = caDimensions.x - 1;
-					}
-				}
-				// Getting the last cell from the specific row
-				index = DimensionConverter::_3to1(caDimensions, end);
-				i += *(caState + index) * counter;
-				counter *= 2;
-				// Taking care of the borders (column)
-				if (--end.y < 0)
-				{
-					end.y = caDimensions.y - 1;
-				}
-				// Reset the end.x
-				end.x = temp.x;
-			}
-			// Getting the last row
-			while (end.x != begin.x)
-			{
-				// Getting the right index
-				index = DimensionConverter::_3to1(caDimensions, end);
-				i += *(caState + index) * counter;
-				counter *= 2;
-				// Taking care of the borders (row)
-				if (--end.x < 0)
-				{
-					end.x = caDimensions.x - 1;
-				}
-			}
-			// Getting the last cell value from the last row
-			index = DimensionConverter::_3to1(caDimensions, end);
-			i += *(caState + index) * counter;
-
-			// Returning the next cell value
-			return *(m_bValues + i);
-		}
 
 		/* Applying this rule to a cellular automata state, leaving the borders untouched.
 		*/
 		value_type applyRuleBorder(pointer caState, dim3 caDimensions, dim3 indexes)
 		{
 
-			
+			srand(time(NULL));
 
 			int3 begin;
 			int3 end;
@@ -256,19 +164,20 @@ namespace ca
 			index = DimensionConverter::_3to1(caDimensions, end);
 			i += *(caState + index) * counter;
 
-			//std::cout << *(m_bValues + i) << " ";
-			if (*(m_bValues + i) == p)
+			float chance = (rand() % 101) / 100;
+			if (*(m_bValues + i) < chance)
 			{
-				value_type val = rand() % 2;
-				std::cout << val << " ";
-				return val;
+				return 0;
+			}
+			else
+			{
+				return 1;
 			}
 
 			// Returning the next cell value
 			return *(m_bValues + i);
 		}
-
 	};
 }
 
-#endif // !HOST_RULE_HPP
+#endif	// ! HOST_STOCHASTIC_RULE_HPP
