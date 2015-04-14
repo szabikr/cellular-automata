@@ -145,7 +145,7 @@ namespace ca
 			}
 
 			// Saving the value of the end variable
-			dim3 temp(end.x, end.y);
+			dim3 temp(end.x);
 
 			size_type i = 0;
 			size_type counter = 1;
@@ -203,9 +203,6 @@ namespace ca
 		*/
 		value_type applyRuleBorder(pointer caState, dim3 caDimensions, dim3 indexes)
 		{
-
-			
-
 			int3 begin;
 			int3 end;
 
@@ -257,13 +254,12 @@ namespace ca
 			i += *(caState + index) * counter;
 
 			//std::cout << *(m_bValues + i) << " ";
-			if (*(m_bValues + i) == p)
-			{
-				value_type val = rand() % 2;
-				std::cout << val << " ";
-				return val;
-			}
-
+			//if (*(m_bValues + i) == 2)
+			//{
+			//	value_type val = rand() % 2;
+			//	std::cout << val << " ";
+			//	return val;
+			//}
 			// Returning the next cell value
 			return *(m_bValues + i);
 		}

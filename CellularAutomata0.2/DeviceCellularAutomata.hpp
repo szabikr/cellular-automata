@@ -96,13 +96,13 @@ namespace ca
 			//size_ptr caSize				= sizeTypeAllocator.allocate();
 			//HANDLE_ERROR(cudaMemcpy(caSize, &m_bDimensions.x, sizeof(size_type), cudaMemcpyHostToDevice));
 
-			size_ptr ruleNeighbours		= sizeTypeAllocator.allocate();
+			size_type* ruleNeighbours		= sizeTypeAllocator.allocate();
 			HANDLE_ERROR(cudaMemcpy(ruleNeighbours, &m_bRule.m_bNumberOfNeighbours, sizeof(size_type), cudaMemcpyHostToDevice));
 
 			dim3* caDimensions = dim3TypeAllocator.allocate();
 			HANDLE_ERROR(cudaMemcpy(caDimensions, &m_bDimensions, sizeof(dim3), cudaMemcpyHostToDevice));
 
-			size_ptr iterations = sizeTypeAllocator.allocate();
+			size_type* iterations = sizeTypeAllocator.allocate();
 			HANDLE_ERROR(cudaMemcpy(iterations, &numberOfIterations, sizeof(size_type), cudaMemcpyHostToDevice));
 
 			// TODO: Event for time measuring.
@@ -114,9 +114,11 @@ namespace ca
 			blockSize.x = std::min((unsigned int)32, m_bDimensions.x);
 			blockSize.y = std::min((unsigned int)32, m_bDimensions.y);
 
+			size_type sharedMemSize = sizeof(value_type) * size();
+
 			//size_type numberOfThreads = std::min((unsigned int)NUMBER_OF_THREADS, m_bDimensions.x);
 
-			callIterateCA<value_type>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, size());
+			callIterateCA<value_type>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize);
 
 			//iterateCA<<<gridSize, blockSize>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations);
 
@@ -125,10 +127,9 @@ namespace ca
 			//	iterateCA<<<BLOCK_SIZE, numberOfThreads>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours);
 			//}
 
+			sizeTypeAllocator.deallocate(iterations);
 			sizeTypeAllocator.deallocate(ruleNeighbours);
 			dim3TypeAllocator.deallocate(caDimensions);
-
-			// TODO: deallocate the memory
 		}
 	};
 }

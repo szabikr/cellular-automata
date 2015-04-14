@@ -109,24 +109,24 @@ namespace ca
 		void iterate()
 		{
 			// Build the rule
-			std::ifstream fIn("stochasticRuleIter1.txt");
-			std::size_t numberOfNighbours = 0;
-			fIn >> numberOfNighbours;
-			std::size_t ruleSize = ca::HostRule<uchar>::calculateSize(numberOfNighbours);
-			uchar* ruleValues = new uchar[ruleSize];
-			for (std::size_t i = 0; i < ruleSize; ++i)
-			{
-				fIn >> ruleValues[i];
-			}
+			//std::ifstream fIn("guoHallRuleIter1.txt");
+			//std::size_t numberOfNighbours = 0;
+			//fIn >> numberOfNighbours;
+			//std::size_t ruleSize = ca::HostRule<uchar>::calculateSize(numberOfNighbours);
+			//uchar* ruleValues = new uchar[ruleSize];
+			//for (std::size_t i = 0; i < ruleSize; ++i)
+			//{
+			//	fIn >> ruleValues[i];
+			//}
 
-			ca::HostRule<uchar> hRule(ruleValues, ruleSize);
+			//ca::HostRule<uchar> hRule(ruleValues, ruleSize);
 
-			if (ruleValues)
-			{
-				delete[] ruleValues;
-			}
+			//if (ruleValues)
+			//{
+			//	delete[] ruleValues;
+			//}
 
-			fIn.close();
+			//fIn.close();
 
 			pointer tempValues = m_bAllocator.clearAllocate(size());
 			bool hasChanged = true;
@@ -135,69 +135,86 @@ namespace ca
 				hasChanged = false;
 				dim3 indexes;
 
-				for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
+				//if (rand() % 2)
+				//if (k % 2)
+				if (true)
 				{
-					for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
+					for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
 					{
-						for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+						for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
 						{
-							//if ((indexes.y + indexes.x) % 2 == k % 2)
-							//{
+							for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+							{
+								//if ((indexes.y + indexes.x) % 2 == k % 2)
+								//{
+								if (rand() % 100 < 100)
+								{
+									size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
+									tempValues[index] = m_bRule.applyRuleBorder(m_bValues, m_bDimensions, indexes);
+								}
+								//}
+							}
+						}
+					}
+
+
+					for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
+					{
+						for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
+						{
+							for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+							{
 								size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
-								tempValues[index] = m_bRule.applyRuleBorder(m_bValues, m_bDimensions, indexes);
-							//}
+								value_type v = m_bValues[index];
+								m_bValues[index] &= ~tempValues[index];
+								tempValues[index] = 0;
+								if (!hasChanged && v != m_bValues[index])
+									hasChanged = true;
+							}
 						}
 					}
-				}
 
-
-				for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
-				{
-					for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
+					if (!hasChanged)
 					{
-						for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
-						{
-							size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
-							value_type v = m_bValues[index];
-							m_bValues[index] &= ~tempValues[index];
-							//tempValues[index] = 0;
-							if (!hasChanged && v != m_bValues[index])
-								hasChanged = true;
-						}
+						break;
 					}
 				}
-
-				if (!hasChanged)
+				else
 				{
-					break;
-				}
-
-				for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
-				{
-					for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
+					/*for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
 					{
-						for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+						for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
 						{
-							size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
-							tempValues[index] = hRule.applyRuleBorder(m_bValues, m_bDimensions, indexes);
+							for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+							{
+								if (rand() % 100 < 90)
+								{
+									size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
+									tempValues[index] = hRule.applyRuleBorder(m_bValues, m_bDimensions, indexes);
+								}
+							}
 						}
 					}
-				}
 
-				for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
-				{
-					for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
+					for (indexes.z = 0; indexes.z < m_bDimensions.z; ++indexes.z)
 					{
-						for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+						for (indexes.y = 1; indexes.y < m_bDimensions.y - 1; ++indexes.y)
 						{
-							size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
-							value_type v = m_bValues[index];
-							m_bValues[index] &= ~tempValues[index];
-							if (!hasChanged && v != m_bValues[index])
-								hasChanged = true;
+							for (indexes.x = 1; indexes.x < m_bDimensions.x - 1; ++indexes.x)
+							{
+								size_type index = DimensionConverter::_3to1(m_bDimensions, indexes);
+								value_type v = m_bValues[index];
+								m_bValues[index] &= ~tempValues[index];
+								tempValues[index] = 0;
+								if (!hasChanged && v != m_bValues[index])
+									hasChanged = true;
+							}
 						}
-					}
+					}*/
 				}
+				
+
+				
 
 				
 				//for (size_type i = 0; i < size(); ++i)

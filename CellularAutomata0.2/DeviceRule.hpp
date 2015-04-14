@@ -81,7 +81,7 @@ namespace ca
 		*/
 		void calculateNumberOfNeighbours()
 		{
-			m_bNumberOfNeighbours = (size_type)sqrt((double)size());
+			m_bNumberOfNeighbours = (size_type)log2((double)size()) - 1;
 		}
 
 	public:
@@ -127,25 +127,31 @@ namespace ca
 			// Taking care of the borders at the begin
 			if (begin.x < 0)
 			{
+				return 0;
 				begin.x += (int)caDimensions->x;
 			}
 			if (begin.y < 0)
 			{
+				return 0;
 				begin.x += (int)caDimensions->y;
 			}
 
 			// Taking care of the borders at the end
 			if (end.x >= caDimensions->x)
 			{
+				return 0;
 				end.x -= (int)caDimensions->x;
 			}
 			if (end.y >= caDimensions->y)
 			{
+				return 0;
 				end.y -= (int)caDimensions->y;
 			}
 
 			// Saving the values of the end variable
-			dim3 temp(end.x, end.y);
+			dim3 temp(end.x);
+		
+			
 
 			size_type i = 0;
 			size_type counter = 1;
@@ -166,7 +172,7 @@ namespace ca
 						end.x = caDimensions->x - 1;
 					}
 				}
-				// Getting th last cell from the specific row
+				// Getting the last cell from the specific row
 				index = DimensionConverter::_3to1(*caDimensions, end);
 				i += *(caState + index) * counter;
 				counter *= 2;
@@ -222,6 +228,96 @@ namespace ca
 			return rule[i];*/
 		}
 
+		
+		/* Applying a rule to a cellular automata state.
+		*/
+		__device__
+		static value_type applyRuleBorder(pointer caState, dim3* caDimensions, pointer rule, std::size_t* neighbours, dim3 indexes)
+		{
+			int3 begin;
+			int3 end;
+
+			// Initializing the starting neighbour position
+			begin.x = (int)indexes.x - 1;
+			begin.y = (int)indexes.y - 1;
+			begin.z = 0;
+			end.x = (int)indexes.x + 1;
+			end.y = (int)indexes.y + 1;
+			end.z = 0;
+
+			// Taking care of the borders at the begin
+			if (begin.x < 0)
+			{
+				begin.x += (int)caDimensions->x;
+			}
+			if (begin.y < 0)
+			{
+				begin.x += (int)caDimensions->y;
+			}
+
+			// Taking care of the borders at the end
+			if (end.x >= caDimensions->x)
+			{
+				end.x -= (int)caDimensions->x;
+			}
+			if (end.y >= caDimensions->y)
+			{
+				end.y -= (int)caDimensions->y;
+			}
+
+			// Saving the values of the end variable
+			dim3 temp(end.x);
+
+			size_type i = 0;
+			size_type counter = 1;
+			size_type index;
+			// Iterating through the rows
+			while (end.y != begin.y)
+			{
+				// Iterating through the columns
+				while (end.x != begin.x)
+				{
+					// Getting the right index
+					index = DimensionConverter::_3to1(*caDimensions, end);
+					i += *(caState + index) * counter;
+					counter *= 2;
+					// Taking care of the borders (row)
+					if (--end.x < 0)
+					{
+						end.x = caDimensions->x - 1;
+					}
+				}
+				// Getting the last cell from the specific row
+				index = DimensionConverter::_3to1(*caDimensions, end);
+				i += *(caState + index) * counter;
+				counter *= 2;
+				// Taking care of the borders (column)
+				if (--end.y < 0)
+				{
+					end.y = caDimensions->y - 1;
+				}
+				// Reset the end.x
+				end.x = temp.x;
+			}
+			// Getting the last row
+			while (end.x != begin.x)
+			{
+				// Getting the right index
+				index = DimensionConverter::_3to1(*caDimensions, end);
+				i += *(caState + index) * counter;
+				counter *= 2;
+				// Taking care of the borders (row)
+				if (--end.x < 0)
+				{
+					end.x = caDimensions->x - 1;
+				}
+			}
+			// Getting the last cell value from the last row
+			index = DimensionConverter::_3to1(*caDimensions, end);
+			i += *(caState + index) * counter;
+			// Returning the next cell value
+			return *(rule + i);
+		}
 		
 	};
 }

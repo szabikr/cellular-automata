@@ -10,7 +10,7 @@
 #include <vector>
 #include <string>
 
-#define DEFAULT_SIZE	20
+#define DEFAULT_SIZE	1
 
 namespace ca
 {
