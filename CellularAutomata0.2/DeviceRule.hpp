@@ -151,8 +151,6 @@ namespace ca
 			// Saving the values of the end variable
 			dim3 temp(end.x);
 		
-			
-
 			size_type i = 0;
 			size_type counter = 1;
 			size_type index;
@@ -169,6 +167,7 @@ namespace ca
 					// Taking care of the borders (row)
 					if (--end.x < 0)
 					{
+						printf("Problem!");
 						end.x = caDimensions->x - 1;
 					}
 				}
@@ -179,6 +178,7 @@ namespace ca
 				// Taking care of the borders (column)
 				if (--end.y < 0)
 				{
+					printf("Problem!");
 					end.y = caDimensions->y - 1;
 				}
 				// Reset the end.x
@@ -194,6 +194,7 @@ namespace ca
 				// Taking care of the borders (row)
 				if (--end.x < 0)
 				{
+					printf("Problem!");
 					end.x = caDimensions->x - 1;
 				}
 			}

@@ -76,11 +76,7 @@ namespace ca
 		*/
 		virtual ~DeviceArray()
 		{
-			//m_bAllocator->deallocate(m_bValues);
-			//if (m_bAllocator)
-			//{
-			//	delete m_bAllocator;
-			//}
+
 		}
 
 	private:

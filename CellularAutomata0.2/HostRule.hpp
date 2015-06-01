@@ -253,6 +253,11 @@ namespace ca
 			index = DimensionConverter::_3to1(caDimensions, end);
 			i += *(caState + index) * counter;
 
+			if (i > 511)
+			{
+				std::cout << "i = " << i << std::endl;
+			}
+
 			//std::cout << *(m_bValues + i) << " ";
 			//if (*(m_bValues + i) == 2)
 			//{

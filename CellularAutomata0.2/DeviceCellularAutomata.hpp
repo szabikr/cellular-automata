@@ -105,20 +105,57 @@ namespace ca
 			size_type* iterations = sizeTypeAllocator.allocate();
 			HANDLE_ERROR(cudaMemcpy(iterations, &numberOfIterations, sizeof(size_type), cudaMemcpyHostToDevice));
 
+			size_type* numberOfChangedElements = sizeTypeAllocator.allocate();
+
+			pointer otherValues = m_bAllocator.allocate(size());
+			HANDLE_ERROR(cudaMemcpy(otherValues, m_bValues, size() * sizeof(value_type), cudaMemcpyDeviceToDevice));
+			
+
 			// TODO: Event for time measuring.
 
 			/*const size_type blockSize = (m_bDimensions.x + NUMBER_OF_THREADS - 1) / NUMBER_OF_THREADS;*/
 			
-			dim3 gridSize;
 			dim3 blockSize;
 			blockSize.x = std::min((unsigned int)32, m_bDimensions.x);
 			blockSize.y = std::min((unsigned int)32, m_bDimensions.y);
+
+			dim3 gridSize;
+			gridSize.x = (m_bDimensions.x + blockSize.x - 1) / blockSize.x;
+			gridSize.y = (m_bDimensions.y + blockSize.y - 1) / blockSize.y;
 
 			size_type sharedMemSize = sizeof(value_type) * size();
 
 			//size_type numberOfThreads = std::min((unsigned int)NUMBER_OF_THREADS, m_bDimensions.x);
 
-			callIterateCA<value_type>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize);
+			size_type h_numberOfElementsChanged = 1;
+			//for (std::size_t i = 0; h_numberOfElementsChanged > 0 && i < 200; ++i)
+			while (h_numberOfElementsChanged > 0)
+			{
+				//std::size_t num;
+				//if (rand() % 2)
+				//{
+				//	num = 0;
+				//}
+				//else
+				//{
+				//	num = m_bRule.size() / 2;
+				//}
+
+				HANDLE_ERROR(cudaMemset(numberOfChangedElements, 0, sizeof(size_type)));
+				callIterateCA<value_type>(m_bValues, otherValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize, numberOfChangedElements);
+				callIterateCA<value_type>(otherValues, m_bValues, caDimensions, m_bRule.m_bValues + m_bRule.size() / 2, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize, numberOfChangedElements);
+				HANDLE_ERROR(cudaMemcpy(&h_numberOfElementsChanged, numberOfChangedElements, sizeof(size_type), cudaMemcpyDeviceToHost));
+				//if (h_numberOfElementsChanged == 0)
+				//{
+				//	break;
+				//}
+				//HANDLE_ERROR(cudaMemset(numberOfChangedElements, 0, sizeof(size_type)));
+				//callIterateCA<value_type>(m_bValues, otherValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize, numberOfChangedElements);
+				//callIterateCA<value_type>(otherValues, m_bValues, caDimensions, m_bRule.m_bValues + m_bRule.size() / 2, ruleNeighbours, iterations, gridSize, blockSize, sharedMemSize, numberOfChangedElements);
+				//HANDLE_ERROR(cudaMemcpy(&h_numberOfElementsChanged, numberOfChangedElements, sizeof(size_type), cudaMemcpyDeviceToHost));
+			}
+			
+			
 
 			//iterateCA<<<gridSize, blockSize>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours, iterations);
 
@@ -126,7 +163,7 @@ namespace ca
 			//{
 			//	iterateCA<<<BLOCK_SIZE, numberOfThreads>>>(m_bValues, caDimensions, m_bRule.m_bValues, ruleNeighbours);
 			//}
-
+			m_bAllocator.deallocate(otherValues);
 			sizeTypeAllocator.deallocate(iterations);
 			sizeTypeAllocator.deallocate(ruleNeighbours);
 			dim3TypeAllocator.deallocate(caDimensions);
